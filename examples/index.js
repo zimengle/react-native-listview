@@ -1,65 +1,32 @@
 import React, {Component} from 'react';
-import {Text, Navigator,TouchableHighlight} from 'react-native';
-import Modal from './sence/Modal';
-import Danmaku from './sence/Danmaku';
-import Home from './sence/Home';
-
+import {Text, ListView,RecyclerViewBackedScrollView} from 'react-native';
+import RecyclerView from '../src/RecyclerView';
 export default class Index extends Component {
+    constructor() {
+        super();
+        this.data = [];
+        for(let i = 0;i<1000;i++){
+            this.data.push("row "+i);
+        }
+        this._data = [].concat(this.data);
+        this.state = {
+            datas: this.data
+        };
+    }
+
+    switch(di,vi){
+        this._data[vi] = this.data[di];
+        this.setState({
+            datas: this._data
+        });
+    }
+
     render() {
-        const routes = [
-            {name: 'Home'},
-            {name: 'Modal'},
-            {name: 'Danmaku'}
-        ];
         return (
-            <Navigator
-                initialRoute={routes[0]}
-                initialRouteStack={routes}
-                renderScene={(route, navigator) => {
-
-                    let Sence;
-                    switch (route.name) {
-                        case "Home":
-                            Sence = Home;
-                            break;
-                        case "Modal":
-                            Sence = Modal;
-                            break;
-                        case "Danmaku":
-                            Sence = Danmaku;
-                            break;
-                    }
-
-                    if(Sence){
-                        return <Sence navigator={navigator}/>
-                    }
-                    return null;
-                }}
-                navigationBar={
-                    <Navigator.NavigationBar
-                        routeMapper={{
-                            LeftButton: (route, navigator, index, navState) => {
-                                if (index === 0) {
-                                    return null;
-                                } else {
-                                    return (
-                                        <TouchableHighlight onPress={() => navigator.pop()}>
-                                            <Text>Back</Text>
-                                        </TouchableHighlight>
-                                    );
-                                }
-                            },
-                            RightButton: (route, navigator, index, navState) => {
-                                return (<Text>Done</Text>);
-                            },
-                            Title: (route, navigator, index, navState) => {
-                                return (<Text>Awesome Nav Bar</Text>);
-                            },
-                        }}
-                        style={{height:30,backgroundColor:"#4285f4"}}
-                    />
-                }
-                style={{paddingTop:30}}
+            <RecyclerView
+                onBindView={(di,vi)=>{this.switch(di,vi)}}
+                datas={this.state.datas}
+                renderRow={(rowData) => <Text style={{height:100,color:'#000'}}>{rowData}</Text>}
             />
         );
     }

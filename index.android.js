@@ -7,7 +7,9 @@ import {
 
 // import Index from './examples/index'
 
-import Danmaku  from './examples/sence/Danmaku'
-import MyModal  from './examples/sence/Modal'
+import Index  from './examples/index'
 
-AppRegistry.registerComponent('AwesomeProject2', () => Danmaku);
+
+AppRegistry.registerComponent('AwesomeProject2', () => Index);
+
+AppRegistry.registerComponent('MyAttention', () => Index);
